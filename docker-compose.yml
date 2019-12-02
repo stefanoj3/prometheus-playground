@@ -1,0 +1,24 @@
+version: "3.1"
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/go/src/github.com/stefanoj3/prometheus-playground
+    ports:
+      - "8089:8089"
+
+  prometheus:
+    image: prom/prometheus:v2.14.0
+    volumes:
+      - ./resources/prometheus:/etc/config
+    command:
+      - '--config.file=/etc/config/prometheus.yml'
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:6.5.1
+    ports:
+      - "3000:3000"
